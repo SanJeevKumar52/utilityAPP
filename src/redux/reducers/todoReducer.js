@@ -1,14 +1,40 @@
+const { createSlice } = require("@reduxjs/toolkit")
 
-import { ADD_TODO, TOGGLE_TODO } from "../actions/todoActions";
 
-const initialState={
-    todos:[
-        {text:"Go to Gym at 6", completed: false},
-        {text: "Study at 8", completed: true}
+
+const initialState = {
+    todos: [
+        { text: "Go to Gym at 6", completed: false },
+        { text: "Study at 8", completed: true }
     ]
 }
+//creating Reducer using Redux TOOlkit
+const todoSlice = createSlice({
+    name: 'todo',
+    initialState: initialState,
+    reducers: {
+        add: (state, action) => {
+            state.todos.push({
+                text: action.payload,
+                completed: false
+            })
+        },
+        toggle:(state,action)=>{
+            state.todos.map((todo,i)=>{
+                if(i==action.payload){
+                    todo.completed=!todo.completed;
+                }
+                return todo;
+            })
+        }
+    }
+});
 
-export function todoReducer(state=initialState, action){
+export const todoReducer =todoSlice.reducer;
+export const actions = todoSlice.actions;
+
+export const todoSelector = (state)=> state.todoReducer.todos;
+/* export function todoReducer(state=initialState, action){
 
     switch(action.type){
         case ADD_TODO:
@@ -35,4 +61,4 @@ export function todoReducer(state=initialState, action){
         default:
             return state;
     }
-}
+} */
